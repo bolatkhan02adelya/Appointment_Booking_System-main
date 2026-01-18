@@ -35,7 +35,7 @@ public class AppointmentService {
         boolean isSaved = appointmentRepo.makeAppointment(appointment);
 
         if (isSaved) {
-            return "Booking successful!";
+            return "Booking successful!!";
         } else {
             return "Error: Slot is already occupied or database error.";
         }
