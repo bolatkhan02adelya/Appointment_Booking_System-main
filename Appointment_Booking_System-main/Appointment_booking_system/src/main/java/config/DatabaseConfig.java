@@ -1,10 +1,12 @@
 package config;
 
+import config.interfaces.IDB;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DatabaseConfig {
+public class DatabaseConfig implements IDB {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/appointment_db";
     private static final String USER = "postgres";      // твой username
