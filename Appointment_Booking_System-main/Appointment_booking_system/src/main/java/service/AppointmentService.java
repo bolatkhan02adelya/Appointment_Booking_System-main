@@ -16,6 +16,10 @@ public class AppointmentService {
         this.slotRepo = slotRepo;
     }
 
+    public List<String> getAllAppointments() {
+        return appointmentRepo.getAllAppointments();
+    }
+
     public String book(int userId, int serviceId, int slotId) {
         List<TimeSlot> allSlots = slotRepo.getAllSlots();
         TimeSlot selectedSlot = null;
@@ -31,17 +35,24 @@ public class AppointmentService {
             return "Error: Slot not found!";
         }
 
+        if (!selectedSlot.isAvailable()) {
+            return "Error: Slot is already occupied!";
+        }
+
         Appointment appointment = new Appointment(userId, serviceId, slotId);
         boolean isSaved = appointmentRepo.makeAppointment(appointment);
 
         if (isSaved) {
+            selectedSlot.setAvailable(false);
             return "Booking successful!";
-        } else {
-            return "Error: Slot is already occupied or database error.";
         }
+
+        return "Database error.";
     }
 
     public List<TimeSlot> getAvailableSlots() {
-        return slotRepo.getAllSlots();
+        List<TimeSlot> allSlots = slotRepo.getAllSlots();
+        allSlots.removeIf(slot -> !slot.isAvailable());
+        return allSlots;
     }
 }
