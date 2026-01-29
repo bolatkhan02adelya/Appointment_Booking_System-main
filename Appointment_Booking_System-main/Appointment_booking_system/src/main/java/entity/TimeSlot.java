@@ -1,31 +1,26 @@
 package entity;
 
-import java.time.LocalTime;
+import repository.interfaces.ITimeSlotRepository;
 
 public class TimeSlot {
     private int id;
-    private LocalTime slotTime;
+    private String slotTime;
+    private boolean isAvailable;
 
-    public TimeSlot() {}
+    public TimeSlot(String slotTime, boolean isAvailable) {
+        this.slotTime = slotTime;
+        this.isAvailable = isAvailable;
+    }
 
-    public TimeSlot(int id, LocalTime slotTime) {
+
+    public TimeSlot(int id, String slotTime, boolean isAvailable) {
         this.id = id;
         this.slotTime = slotTime;
+        this.isAvailable = isAvailable;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public LocalTime getSlotTime() {
-        return slotTime;
-    }
-
-    public void setSlotTime(LocalTime slotTime) {
-        this.slotTime = slotTime;
-    }
+    public int getId() { return id; }
+    public String getSlotTime() { return slotTime; }
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
 }

@@ -3,47 +3,28 @@ package entity;
 public class User {
     private int id;
     private String name;
-    private String email;
-    private String phone;
+    private String surname;
+    private boolean gender ;
 
-    public User() {}
-
-    public User(int id, String name, String email, String phone) {
-        this.id = id;
+    public User(String name, String surname, boolean gender) {
         this.name = name;
-        this.email = email;
-        this.phone = phone;
+        this.surname = surname;
+        this.gender = gender;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public User(int id, String name, String surname, boolean gender) {
+        this(name, surname, gender);
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public String getSurname() { return surname; }
+    public boolean getGender() { return gender; }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
+    @Override
+    public String toString() {
+        return "User{id=" + id + ", name='" + name + "', surname='" + surname + "', gender=" + (gender ? "Male" : "Female") + "}";
     }
 }
