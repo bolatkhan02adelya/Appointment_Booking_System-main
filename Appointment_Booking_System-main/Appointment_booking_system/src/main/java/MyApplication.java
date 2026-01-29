@@ -26,6 +26,7 @@ public class MyApplication {
             System.out.println("2. Create user");
             System.out.println("3. View services and slots");
             System.out.println("4. Book appointment");
+            System.out.println("5. View appointments");
             System.out.println("0. Exit");
             System.out.print("Option: ");
 
@@ -36,6 +37,7 @@ public class MyApplication {
                     case 2 -> createUserMenu();
                     case 3 -> showServicesAndSlots();
                     case 4 -> createBookingMenu();
+                    case 5 -> appointmentService.getAllAppointments().forEach(System.out::println);
                     case 0 -> { return; }
                     default -> System.out.println("Invalid option.");
                 }
@@ -80,3 +82,4 @@ public class MyApplication {
         int slotId = scanner.nextInt();
         System.out.println(appointmentService.book(uId, sId, slotId));
     }
+}

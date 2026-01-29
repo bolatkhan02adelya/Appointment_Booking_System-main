@@ -16,14 +16,13 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public boolean createUser(User user) {
-        // Добавили surname и gender в запрос
-        String sql = "INSERT INTO users(name, email, phone) VALUES(?, ?, ?)";
+        String sql = "INSERT INTO users(name, surname, gender) VALUES(?, ?, ?)";
         try (Connection con = db.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
 
             st.setString(1, user.getName());
-            st.setString(2, user.getEmail());
-            st.setString(3, user.getPhone());
+            st.setString(2, user.getSurname());
+            st.setBoolean(3, user.getGender());
 
             st.executeUpdate();
             return true;
@@ -46,8 +45,8 @@ public class UserRepository implements IUserRepository {
                 users.add(new User(
                         rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getString("phone")
+                        rs.getString("surname"),
+                        rs.getBoolean("gender")
                 ));
             }
         } catch (SQLException e) {
@@ -58,7 +57,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public User getUserById(int id) {
-        String sql = "SELECT id, name, email, phone FROM users WHERE id = ?";
+        String sql = "SELECT id, name, surname, gender FROM users WHERE id = ?";
         try (Connection con = db.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
 
@@ -68,8 +67,8 @@ public class UserRepository implements IUserRepository {
                 return new User(
                         rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getString("phone")
+                        rs.getString("surname"),
+                        rs.getBoolean("gender")
                 );
             }
         } catch (SQLException e) {
