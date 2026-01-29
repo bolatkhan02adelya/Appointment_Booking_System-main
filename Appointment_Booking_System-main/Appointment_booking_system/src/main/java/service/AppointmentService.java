@@ -44,7 +44,6 @@ public class AppointmentService {
 
         if (isSaved) {
             selectedSlot.setAvailable(false);
-
             return "Booking successful!";
         }
 
@@ -52,7 +51,6 @@ public class AppointmentService {
     }
 
     public List<TimeSlot> getAvailableSlots() {
-
         List<TimeSlot> allSlots = slotRepo.getAllSlots();
         allSlots.removeIf(slot -> !slot.isAvailable());
         return allSlots;
