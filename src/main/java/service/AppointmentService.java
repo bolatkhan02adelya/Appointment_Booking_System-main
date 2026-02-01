@@ -35,6 +35,7 @@ public class AppointmentService {
             return "Error: Slot not found!";
         }
 
+
         if (!selectedSlot.isAvailable()) {
             return "Error: Slot is already occupied!";
         }
@@ -45,6 +46,10 @@ public class AppointmentService {
         if (isSaved) {
             selectedSlot.setAvailable(false);
             return "Booking successful!";
+        }
+
+        if (userId <= 0 || serviceId <= 0 || slotId <= 0) {
+            return "Validation Error: Negative or zero IDs are not allowed!";
         }
 
         return "Database error.";
