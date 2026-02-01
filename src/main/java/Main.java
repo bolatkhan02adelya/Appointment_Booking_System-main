@@ -5,6 +5,7 @@ import controllers.interfaces.IUserController;
 import repository.*;
 import repository.interfaces.*;
 import service.AppointmentService;
+import service.interfaces.IAppointmentService;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,7 +17,7 @@ public class Main {
         IAppointmentRepository appointmentRepo = new AppointmentRepository(db);
 
         IUserController userController = new UserController(userRepo);
-        AppointmentService appointmentService = new AppointmentService(appointmentRepo, slotRepo);
+        IAppointmentService appointmentService = new AppointmentService(appointmentRepo, slotRepo);
 
         MyApplication app = new MyApplication(userController, serviceRepo, appointmentService);
         app.start();
