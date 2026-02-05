@@ -2,57 +2,50 @@ package service;
 
 import entity.Appointment;
 import entity.TimeSlot;
-import repository.interfaces.IAppointmentRepository;
-import repository.interfaces.ITimeSlotRepository;
+import repository.AppointmentRepository;
+import repository.TimeSlotRepository;
 import java.util.List;
 
 public class AppointmentService {
+    private final AppointmentRepository appointmentRepo;
+    private final TimeSlotRepository slotRepo;
 
-    private final IAppointmentRepository appointmentRepo;
-    private final ITimeSlotRepository slotRepo;
-
-    public AppointmentService(IAppointmentRepository appointmentRepo, ITimeSlotRepository slotRepo) {
+    public AppointmentService(AppointmentRepository appointmentRepo, TimeSlotRepository slotRepo) {
         this.appointmentRepo = appointmentRepo;
         this.slotRepo = slotRepo;
     }
 
-    public List<String> getAllAppointments() {
-        return appointmentRepo.getAllAppointments();
+    public String book(int userId, int serviceId, int slotId, String userRole) {
+        if (userRole == null || (!userRole.equalsIgnoreCase("USER") && !userRole.equalsIgnoreCase("ADMIN"))) {
+            return "Access Denied";
+        }
+
+        TimeSlot slot = slotRepo.findById(slotId);
+        if (slot == null || !slot.getStatus().equals("FREE")) {
+            return "Slot unavailable";
+        }
+
+        if (appointmentRepo.save(new Appointment(userId, serviceId, slotId))) {
+            slotRepo.updateStatus(slotId, "OCCUPIED");
+            return "Success";
+        }
+        return "Database error";
     }
 
-    public String book(int userId, int serviceId, int slotId) {
-        List<TimeSlot> allSlots = slotRepo.getAllSlots();
-        TimeSlot selectedSlot = null;
-
-        for (TimeSlot s : allSlots) {
-            if (s.getId() == slotId) {
-                selectedSlot = s;
-                break;
-            }
+    public boolean cancel(int appointmentId, String userRole) {
+        if (userRole == null || !userRole.equalsIgnoreCase("ADMIN")) {
+            return false;
         }
 
-        if (selectedSlot == null) {
-            return "Error: Slot not found!";
+        Appointment app = appointmentRepo.findById(appointmentId);
+        if (app != null) {
+            slotRepo.updateStatus(app.getSlotId(), "FREE");
+            return appointmentRepo.delete(appointmentId);
         }
-
-        if (!selectedSlot.isAvailable()) {
-            return "Error: Slot is already occupied!";
-        }
-
-        Appointment appointment = new Appointment(userId, serviceId, slotId);
-        boolean isSaved = appointmentRepo.makeAppointment(appointment);
-
-        if (isSaved) {
-            selectedSlot.setAvailable(false);
-            return "Booking successful!";
-        }
-
-        return "Database error.";
+        return false;
     }
 
     public List<TimeSlot> getAvailableSlots() {
-        List<TimeSlot> allSlots = slotRepo.getAllSlots();
-        allSlots.removeIf(slot -> !slot.isAvailable());
-        return allSlots;
+        return slotRepo.findAllFreeSlots();
     }
 }
