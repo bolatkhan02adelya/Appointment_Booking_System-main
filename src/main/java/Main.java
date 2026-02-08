@@ -8,7 +8,7 @@ import service.AppointmentService;
 
 public class Main {
     public static void main(String[] args) {
-        IDB db = new PostgresDB();
+        IDB db = PostgresDB.getInstance();
 
         IUserRepository userRepo = new UserRepository(db);
         IServiceRepository serviceRepo = new ServiceRepository(db);

@@ -5,6 +5,7 @@ import entity.TimeSlot;
 import repository.interfaces.IAppointmentRepository;
 import repository.interfaces.ITimeSlotRepository;
 import java.util.List;
+import entity.AppointmentDetailsDTO;
 
 public class AppointmentService {
 
@@ -59,5 +60,8 @@ public class AppointmentService {
         List<TimeSlot> allSlots = slotRepo.getAllSlots();
         allSlots.removeIf(slot -> !slot.isAvailable());
         return allSlots;
+    }
+    public AppointmentDetailsDTO getFullAppointment(int appointmentId) {
+        return appointmentRepo.getFullAppointment(appointmentId);
     }
 }

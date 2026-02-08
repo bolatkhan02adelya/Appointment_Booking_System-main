@@ -1,7 +1,8 @@
 package config.interfaces;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public interface IDB {
-    Connection getConnection();
+    Connection getConnection() throws SQLException;
 }
