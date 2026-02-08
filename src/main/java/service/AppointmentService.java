@@ -7,6 +7,7 @@ import repository.interfaces.ITimeSlotRepository;
 import service.interfaces.IAppointmentService;
 
 import java.util.List;
+import entity.AppointmentDetailsDTO;
 
 public class AppointmentService implements IAppointmentService {
 
@@ -40,5 +41,8 @@ public class AppointmentService implements IAppointmentService {
         return slotRepo.getAllSlots().stream()
                 .filter(TimeSlot::isAvailable)
                 .toList();
+    }
+    public AppointmentDetailsDTO getFullAppointment(int appointmentId) {
+        return appointmentRepo.getFullAppointment(appointmentId);
     }
 }
