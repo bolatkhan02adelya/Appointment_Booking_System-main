@@ -74,13 +74,19 @@ public class MyApplication {
     }
 
     private void createBookingMenu() {
-        System.out.print("User ID: ");
-        int uId = scanner.nextInt();
-        System.out.print("Service ID: ");
-        int sId = scanner.nextInt();
-        System.out.print("Slot ID: ");
-        int slotId = scanner.nextInt();
-        System.out.println(appointmentService.book(uId, sId, slotId));
+        try {
+            System.out.print("User ID: ");
+            int uId = scanner.nextInt();
+            System.out.print("Service ID: ");
+            int sId = scanner.nextInt();
+            System.out.print("Slot ID: ");
+            int slotId = scanner.nextInt();
+            System.out.println(appointmentService.book(uId, sId, slotId));
+
+        } catch (InputMismatchException e) {
+            System.out.println("Validation Error: Please enter numeric IDs only!");
+            scanner.nextLine();
+        }
     }
     private void viewFullAppointmentMenu() {
         System.out.print("Enter appointment id: ");

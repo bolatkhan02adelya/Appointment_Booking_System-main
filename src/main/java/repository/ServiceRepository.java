@@ -13,26 +13,43 @@ public class ServiceRepository implements IServiceRepository {
 
     @Override
     public boolean createService(Service service) {
-        String sql = "INSERT INTO services(service_name, price) VALUES(?, ?)";
+        String sql = "INSERT INTO services(service_name, price, category_id) VALUES(?, ?, ?)";
         try (Connection con = db.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
             st.setString(1, service.getName());
             st.setDouble(2, service.getPrice());
+            st.setNull(3, Types.INTEGER);
             st.executeUpdate();
             return true;
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) {
+            System.out.println("Error creating service: " + e.getMessage());
+            return false;
+        }
     }
 
     @Override
     public List<Service> getAllServices() {
         List<Service> services = new ArrayList<>();
+        String sql = "SELECT s.id, s.service_name, s.price, c.name AS cat_name " +
+                "FROM services s " +
+                "LEFT JOIN categories c ON s.category_id = c.id";
+
         try (Connection con = db.getConnection();
              Statement st = con.createStatement();
-             ResultSet rs = st.executeQuery("SELECT * FROM services")) {
+             ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
-                services.add(new Service(rs.getInt("id"), rs.getString("service_name"), rs.getDouble("price")));
+                String category = rs.getString("cat_name");
+                String displayName = rs.getString("service_name") + (category != null ? " [" + category + "]" : "");
+
+                services.add(new Service(
+                        rs.getInt("id"),
+                        displayName,
+                        rs.getDouble("price")
+                ));
             }
-        } catch (SQLException e) { System.out.println(e.getMessage()); }
+        } catch (SQLException e) {
+            System.out.println("Error getting services: " + e.getMessage());
+        }
         return services;
     }
 }
