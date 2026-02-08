@@ -1,6 +1,7 @@
 import controllers.interfaces.IUserController;
 import repository.interfaces.IServiceRepository;
 import service.AppointmentService;
+import service.interfaces.IAppointmentService;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -9,9 +10,9 @@ public class MyApplication {
     private final Scanner scanner = new Scanner(System.in);
     private final IUserController userController;
     private final IServiceRepository serviceRepo;
-    private final AppointmentService appointmentService;
+    private final IAppointmentService appointmentService;
 
-    public MyApplication(IUserController userController, IServiceRepository serviceRepo, AppointmentService appointmentService) {
+    public MyApplication(IUserController userController, IServiceRepository serviceRepo, IAppointmentService appointmentService) {
         this.userController = userController;
         this.serviceRepo = serviceRepo;
         this.appointmentService = appointmentService;
