@@ -4,6 +4,8 @@ import config.interfaces.IDB;
 import entity.Appointment;
 import entity.AppointmentDetailsDTO;
 import repository.interfaces.IAppointmentRepository;
+import config.PostgresDB;  
+
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -39,16 +41,16 @@ public class AppointmentRepository implements IAppointmentRepository {
         List<String> list = new ArrayList<>();
 
         String sql = """
-            SELECT a.id,
-                   u.name,
-                   u.surname,
-                   s.service_name,
-                   t.slot_time
-            FROM appointments a
-            JOIN users u ON a.user_id = u.id
-            JOIN services s ON a.service_id = s.id
-            JOIN timeslots t ON a.slot_id = t.id
-        """;
+                    SELECT a.id,
+                           u.name,
+                           u.surname,
+                           s.service_name,
+                           t.slot_time
+                    FROM appointments a
+                    JOIN users u ON a.user_id = u.id
+                    JOIN services s ON a.service_id = s.id
+                    JOIN timeslots t ON a.slot_id = t.id
+                """;
 
         try (Connection con = db.getConnection();
              Statement st = con.createStatement();
@@ -73,17 +75,17 @@ public class AppointmentRepository implements IAppointmentRepository {
     @Override
     public AppointmentDetailsDTO getFullAppointment(int appointmentId) {
         String sql = """
-            SELECT a.id,
-                   u.name,
-                   u.surname,
-                   s.service_name,
-                   t.slot_time
-            FROM appointments a
-            JOIN users u ON a.user_id = u.id
-            JOIN services s ON a.service_id = s.id
-            JOIN timeslots t ON a.slot_id = t.id
-            WHERE a.id = ?
-        """;
+                    SELECT a.id,
+                           u.name,
+                           u.surname,
+                           s.service_name,
+                           t.slot_time
+                    FROM appointments a
+                    JOIN users u ON a.user_id = u.id
+                    JOIN services s ON a.service_id = s.id
+                    JOIN timeslots t ON a.slot_id = t.id
+                    WHERE a.id = ?
+                """;
 
         try (Connection con = db.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
@@ -106,4 +108,7 @@ public class AppointmentRepository implements IAppointmentRepository {
 
         return null;
     }
+
 }
+
+

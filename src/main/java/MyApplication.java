@@ -1,10 +1,8 @@
 import controllers.interfaces.IUserController;
-import entity.Service;
-import entity.TimeSlot;
 import repository.interfaces.IServiceRepository;
 import service.AppointmentService;
+
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 public class MyApplication {
@@ -27,6 +25,7 @@ public class MyApplication {
             System.out.println("3. View services and slots");
             System.out.println("4. Book appointment");
             System.out.println("5. View appointments");
+            System.out.println("6. View full appointment details by id");
             System.out.println("0. Exit");
             System.out.print("Option: ");
 
@@ -38,6 +37,7 @@ public class MyApplication {
                     case 3 -> showServicesAndSlots();
                     case 4 -> createBookingMenu();
                     case 5 -> appointmentService.getAllAppointments().forEach(System.out::println);
+                    case 6 -> viewFullAppointmentMenu();
                     case 0 -> { return; }
                     default -> System.out.println("Invalid option.");
                 }
@@ -82,4 +82,28 @@ public class MyApplication {
         int slotId = scanner.nextInt();
         System.out.println(appointmentService.book(uId, sId, slotId));
     }
+    private void viewFullAppointmentMenu() {
+        System.out.print("Enter appointment id: ");
+        try {
+            int id = scanner.nextInt();
+
+            var dto = appointmentService.getFullAppointment(id);
+
+            if (dto == null) {
+                System.out.println("Appointment not found!");
+                return;
+            }
+
+            System.out.println("===== APPOINTMENT DETAILS =====");
+            System.out.println("Appointment ID: " + dto.getAppointmentId());
+            System.out.println("User: " + dto.getUserName());
+            System.out.println("Service: " + dto.getServiceName());
+            System.out.println("Time: " + dto.getSlotTime());
+
+        } catch (InputMismatchException e) {
+            System.out.println("Error: Enter a number.");
+            scanner.nextLine();
+        }
+    }
+
 }

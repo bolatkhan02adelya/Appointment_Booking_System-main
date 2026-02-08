@@ -13,7 +13,7 @@ public class ServiceRepository implements IServiceRepository {
 
     @Override
     public boolean createService(Service service) {
-        String sql = "INSERT INTO services(name, price) VALUES(?, ?)";
+        String sql = "INSERT INTO services(service_name, price) VALUES(?, ?)";
         try (Connection con = db.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
             st.setString(1, service.getName());
