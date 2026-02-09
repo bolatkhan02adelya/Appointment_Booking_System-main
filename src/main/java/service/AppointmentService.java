@@ -42,6 +42,7 @@ public class AppointmentService implements IAppointmentService {
                 .filter(TimeSlot::isAvailable)
                 .toList();
     }
+    @Override
     public AppointmentDetailsDTO getFullAppointment(int appointmentId) {
         return appointmentRepo.getFullAppointment(appointmentId);
     }
